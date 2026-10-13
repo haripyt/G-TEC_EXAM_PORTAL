@@ -1,0 +1,57 @@
+[
+  {
+    "sessionId": "DEMO-001",
+    "text": "Which of the following is used to structure a web page?",
+    "options": [
+      "HTML",
+      "CSS",
+      "SQL",
+      "Photoshop"
+    ],
+    "correct": 0
+  },
+  {
+    "sessionId": "DEMO-001",
+    "text": "Which language is mainly used to style web pages?",
+    "options": [
+      "Python",
+      "CSS",
+      "PHP",
+      "SQL"
+    ],
+    "correct": 1
+  },
+  {
+    "sessionId": "DEMO-001",
+    "text": "What does URL stand for?",
+    "options": [
+      "Universal Record Link",
+      "Uniform Resource Locator",
+      "User Routing Level",
+      "Unified Resource List"
+    ],
+    "correct": 1
+  },
+  {
+    "sessionId": "DEMO-001",
+    "text": "Which one is a JavaScript data type?",
+    "options": [
+      "Boolean",
+      "Canvas",
+      "Browser",
+      "Website"
+    ],
+    "correct": 0
+  },
+  {
+    "sessionId": "DEMO-001",
+    "text": "Which SQL command retrieves data?",
+    "options": [
+      "PUSH",
+      "SELECT",
+      "MAKE",
+      "SHOWFILE"
+    ],
+    "correct": 1
+  }
+]

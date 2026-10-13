@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>G-TEC Education | Exam Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="G-TEC Education Exam Portal home">
+        <img class="brand-logo" src="gtec-logo.png" alt="G-TEC Education">
+      </a>
+      <div class="topbar-right"><span class="live-dot"></span><span>EXAM PORTAL</span></div>
+      <button id="studentEntryButton" type="button" class="student-entry-link">Student login</button>
+    </header>
+
+    <main>
+      <section id="centerLogin" class="screen auth-layout">
+        <div class="welcome-panel">
+          <span class="eyebrow">G-TEC EDUCATION · ANNA NAGAR</span>
+          <h1>Assess skills.<br><span>Unlock potential.</span></h1>
+          <p>A simple, focused platform for conducting student assessments and reviewing results.</p>
+          <div class="welcome-points">
+            <div><span class="point-icon">01</span><span><b>Set up exams</b><small>Student details, questions and duration</small></span></div>
+            <div><span class="point-icon">02</span><span><b>Conduct securely</b><small>Timed exam with camera permission</small></span></div>
+            <div><span class="point-icon">03</span><span><b>Review results</b><small>Score, answers and time taken</small></span></div>
+          </div>
+        </div>
+        <div class="auth-card">
+          <div class="mobile-brand">G-TEC EDUCATION</div>
+          <span class="eyebrow">CENTER ACCESS</span>
+          <h2>Welcome back</h2>
+          <p class="muted">Sign in to onboard students and manage exam sessions.</p>
+          <form id="centerLoginForm" class="stack-form">
+            <label>Center username<input id="centerUsername" autocomplete="username" required placeholder="Enter username"></label>
+            <label>Password<div class="password-wrap"><input id="centerPassword" type="password" autocomplete="current-password" required placeholder="Enter password"><button type="button" class="show-password" data-target="centerPassword">Show</button></div></label>
+            <button class="btn btn-primary btn-full" type="submit">Sign in to center <span>→</span></button>
+            <p id="centerLoginError" class="form-error" role="alert"></p>
+          </form>
+          <div class="demo-note"><b>Demo login</b><span>Username: <code>centeradmin</code> · Password: <code>Gtec@123</code></span></div>
+          <p class="tiny-note">Prototype only. Change demo credentials before use.</p>
+        </div>
+      </section>
+
+      <section id="centerDashboard" class="screen hidden">
+        <div class="page-heading">
+          <div><span class="eyebrow">CENTER WORKSPACE</span><h1>Exam management</h1><p class="muted">Create student access keys and prepare assessments.</p></div>
+          <button id="centerLogout" class="btn btn-outline">Log out ↗</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-label">TOTAL STUDENTS</span><strong id="statStudents">0</strong><small>Onboarded in this browser</small></article>
+          <article class="stat-card"><span class="stat-label">EXAM SESSIONS</span><strong id="statSessions">0</strong><small>Available to students</small></article>
+          <article class="stat-card"><span class="stat-label">COMPLETED EXAMS</span><strong id="statCompleted">0</strong><small>Results saved locally</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel-heading"><div><span class="eyebrow">NEW REGISTRATION</span><h2>Onboard a student</h2></div><span class="step-pill">STEP 01</span></div>
+            <form id="onboardForm" class="form-grid">
+              <label class="span-2">Student full name<input id="studentName" required placeholder="e.g. Priya S"></label>
+              <label>Registration number<input id="regNo" required placeholder="e.g. GTEC2026-014"></label>
+              <label>Course<input id="course" required placeholder="e.g. Digital Marketing"></label>
+              <label>Session ID<input id="sessionId" required placeholder="e.g. DM-OCT-26"></label>
+              <label>Student access key<input id="accessKey" required placeholder="Create a unique key"></label>
+              <label>Number of questions<select id="questionCount" required><option value="30" selected>30 questions</option><option value="45">45 questions</option></select></label>
+              <label>Duration (minutes)<input id="duration" type="number" min="1" max="240" value="20" required></label>
+              <div class="span-2"><button class="btn btn-primary btn-full" type="submit">Create student access <span>→</span></button></div>
+              <p id="onboardMessage" class="form-message span-2" role="status"></p>
+            </form>
+          </section>
+          <section class="panel question-panel">
+            <div class="panel-heading"><div><span class="eyebrow">PDF QUESTION BANK</span><h2>Import questions from PDF</h2></div><span class="step-pill">STEP 02</span></div>
+            <p class="muted small">Upload 2–3 question-paper PDFs together. The portal extracts MCQs and combines them into one session question bank. Review the extracted questions and mark the correct answer before saving.</p>
+            <form id="pdfImportForm" class="stack-form">
+              <label>Session ID<input id="pdfSessionId" required placeholder="Must match the student session ID"></label>
+              <label>Question paper PDFs<input id="pdfFiles" type="file" accept="application/pdf,.pdf" multiple required></label>
+              <p class="tiny-note">Choose multiple PDFs at once. Text-based PDFs work best; scanned/image-only PDFs may not extract correctly.</p>
+              <button class="btn btn-secondary btn-full" type="submit" id="parsePdfsButton">Extract questions from PDF(s) ↗</button>
+              <p id="pdfImportMessage" class="form-message" role="status"></p>
+            </form>
+            <div id="pdfReview" class="pdf-review hidden">
+              <div class="review-toolbar"><b id="pdfReviewCount">Questions found</b><button id="savePdfQuestions" type="button" class="btn btn-primary btn-small">Save question bank</button></div>
+              <p class="tiny-note">Check each question and select its correct answer. Questions without four detected options are flagged for review.</p>
+              <div id="pdfReviewList"></div>
+            </div>
+            <div id="questionBankSummary" class="question-summary"></div>
+          </section>        </div>
+        <section class="panel table-panel">
+          <div class="panel-heading"><div><span class="eyebrow">STUDENT ACCESS</span><h2>Onboarded students</h2></div><button id="exportResults" class="btn btn-outline btn-small">Export results CSV ↓</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Student</th><th>Reg. no.</th><th>Course</th><th>Session ID</th><th>Questions</th><th>Duration</th><th>Status / Score</th></tr></thead><tbody id="studentsTable"></tbody></table></div>
+          <p class="tiny-note">Access keys are not displayed here. Store them securely and share them with the intended student.</p>
+        </section>
+        <section class="panel table-panel">
+          <div class="panel-heading"><div><span class="eyebrow">QUESTION BANK MANAGEMENT</span><h2>Manage imported questions</h2><p class="muted small">Questions are grouped by session ID. Edit or delete questions as needed.</p></div></div>
+          <div class="form-grid question-manage-filters">
+            <label>Filter by session ID<input id="manageQuestionSession" placeholder="Enter session ID (optional)"></label>
+            <label>Search question text<input id="manageQuestionSearch" placeholder="Search by question or option"></label>
+          </div>
+          <div id="manageQuestionsList" class="manage-questions-list"></div>
+        </section>
+      </section>
+
+      <section id="studentLogin" class="screen auth-layout hidden">
+        <div class="welcome-panel student-welcome">
+          <span class="eyebrow">STUDENT ASSESSMENT</span>
+          <h1>Your next step<br><span>starts here.</span></h1>
+          <p>Enter the details shared by your center. Check your exam instructions before starting.</p>
+          <div class="student-help"><span class="help-icon">i</span><span><b>Before you begin</b><small>Use a laptop or desktop, keep your camera available, and ensure your device is charged.</small></span></div>
+        </div>
+        <div class="auth-card">
+          <button id="backToCenter" class="back-link" type="button">← Center access</button>
+          <span class="eyebrow">STUDENT LOGIN</span>
+          <h2>Ready for your exam?</h2>
+          <p class="muted">Enter the session ID and access key provided by your center.</p>
+          <form id="studentLoginForm" class="stack-form">
+            <label>Session ID<input id="loginSessionId" required placeholder="Enter session ID"></label>
+            <label>Access key<input id="loginAccessKey" type="password" required placeholder="Enter your key"></label>
+            <button class="btn btn-primary btn-full" type="submit">Continue to exam <span>→</span></button>
+            <p id="studentLoginError" class="form-error" role="alert"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="instructions" class="screen hidden narrow-screen">
+        <div class="page-heading"><div><span class="eyebrow">PLEASE READ CAREFULLY</span><h1>Exam instructions</h1><p class="muted">Confirm your details before the timer begins.</p></div><button id="studentLogout1" class="btn btn-outline">Exit</button></div>
+        <div class="exam-overview">
+          <div class="overview-main"><span class="avatar" id="studentAvatar">S</span><div><span class="eyebrow">CANDIDATE</span><h2 id="detailName">Student Name</h2><p id="detailReg" class="muted">Registration number</p></div></div>
+          <div class="overview-grid"><div><small>COURSE</small><b id="detailCourse">—</b></div><div><small>SESSION ID</small><b id="detailSession">—</b></div><div><small>QUESTIONS</small><b id="detailQuestions">—</b></div><div><small>DURATION</small><b id="detailDuration">—</b></div></div>
+        </div>
+        <div class="panel instructions-panel">
+          <h2>Before starting</h2>
+          <ul class="instruction-list">
+            <li><span>✓</span><div><b>Timer starts immediately</b><small>The countdown begins once you select “Start exam”. Leaving the page may interrupt your attempt.</small></div></li>
+            <li><span>✓</span><div><b>Answer every question</b><small>Select one option per question. You can move between questions until you submit or time runs out.</small></div></li>
+            <li><span>✓</span><div><b>Camera permission is required</b><small>Your browser will ask for camera access. Keep your camera enabled throughout the exam.</small></div></li>
+            <li><span>✓</span><div><b>Automatic submission</b><small>Your exam submits when you answer the final question or the timer reaches zero.</small></div></li>
+          </ul>
+          <div class="consent-box"><label class="checkbox-line"><input type="checkbox" id="agreeRules"><span>I have checked my details, understand the instructions, and agree to keep my camera enabled during the exam.</span></label></div>
+          <p id="startError" class="form-error" role="alert"></p>
+          <button id="startExam" class="btn btn-primary btn-full btn-large" type="button" disabled>Enable camera & start exam <span>→</span></button>
+        </div>
+      </section>
+
+      <section id="examScreen" class="screen hidden">
+        <div class="exam-topline"><div><span class="eyebrow">G-TEC ASSESSMENT</span><h1 id="examCourseTitle">Exam</h1></div><div class="timer-card"><span class="timer-dot"></span><div><small>TIME REMAINING</small><strong id="timerText">20:00</strong></div></div></div>
+        <div class="exam-layout">
+          <section class="panel question-card">
+            <div class="question-meta"><span id="questionPosition">QUESTION 1 OF 10</span><span id="answeredCount">0 answered</span></div>
+            <div class="progress-track"><span id="examProgress"></span></div>
+            <h2 id="questionPrompt">Question text</h2>
+            <div id="answerOptions" class="answer-options"></div>
+            <div class="question-navigation"><button id="prevQuestion" class="btn btn-outline" type="button">← Previous</button><button id="nextQuestion" class="btn btn-primary" type="button">Next question →</button><button id="submitExam" class="btn btn-danger hidden" type="button">Submit exam</button></div>
+          </section>
+          <aside class="exam-sidebar">
+            <div class="panel camera-panel"><div class="camera-heading"><span class="camera-status-dot"></span><b>Camera check</b><span id="cameraLabel" class="camera-label">Starting…</span></div><video id="cameraVideo" autoplay muted playsinline></video><p id="cameraMessage" class="camera-message">Camera is enabled for the exam.</p></div>
+            <div class="panel question-nav-panel"><b>Question palette</b><p class="muted tiny">Select a number to move to that question.</p><div id="questionPalette" class="question-palette"></div><div class="palette-legend"><span><i class="legend-current"></i>Current</span><span><i class="legend-done"></i>Answered</span><span><i class="legend-empty"></i>Unanswered</span></div></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="resultScreen" class="screen hidden narrow-screen">
+        <div class="result-hero"><div class="result-check">✓</div><span class="eyebrow">ASSESSMENT COMPLETED</span><h1>Exam submitted</h1><p id="resultSubtitle">Your answers have been evaluated.</p></div>
+        <div class="score-card"><div class="score-ring"><strong id="scorePercent">0%</strong><small>SCORE</small></div><div class="score-summary"><span class="eyebrow">FINAL RESULT</span><h2 id="resultName">Student Name</h2><p id="resultCourse" class="muted">Course</p><div class="result-badges"><span class="correct-badge" id="correctBadge">0 Correct</span><span class="wrong-badge" id="wrongBadge">0 Wrong</span><span class="skip-badge" id="skipBadge">0 Unanswered</span></div></div></div>
+        <div class="result-stats"><article><small>TIME TAKEN</small><strong id="timeTaken">00:00</strong></article><article><small>TOTAL QUESTIONS</small><strong id="totalQuestionsResult">0</strong></article><article><small>ACCURACY</small><strong id="accuracyResult">0%</strong></article></div>
+        <div class="panel result-review"><div class="panel-heading"><div><span class="eyebrow">ANSWER REVIEW</span><h2>Question summary</h2></div></div><div id="answerReview"></div></div>
+        <p class="result-footnote">Please show this result to your center coordinator if required. This prototype stores results only in the current browser.</p>
+        <button id="finishExam" class="btn btn-primary btn-full" type="button">Finish</button>
+      </section>
+    </main>
+    <footer><span>© G-TEC Education · Anna Nagar, Chennai</span><span>Student assessment portal</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
